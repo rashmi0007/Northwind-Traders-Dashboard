@@ -1,0 +1,97 @@
+1. Total Sales:
+SELECT ROUND(((SUM(CAST((orderplaced_unitprice*quantity)AS numeric))-SUM(CAST((orderplaced_unitprice*quantity)AS numeric)*(discount/100)))/1000000),2) AS Total_sales
+FROM public.combined_table_northwind;
+
+2. Total Customers:
+SELECT COUNT(DISTINCT(customerid)) AS Total_customers FROM public.combined_table_northwind;
+
+3. Total Products:
+SELECT COUNT(DISTINCT(productname)) AS Total_Products FROM public.combined_table_northwind;
+
+4. Countries:
+SELECT COUNT(DISTINCT(customerscountry)) AS countries FROM public.combined_table_northwind;
+
+5. Total Quantity
+SELECT SUM(quantity)/1000 AS total_quantity FROM public.combined_table_northwind;
+
+6. Shipping Charges
+WITH order_details AS (SELECT orderid,freight FROM public.combined_table_northwind GROUP BY orderid,freight)
+SELECT ROUND(SUM(freight)/COUNT(orderid),2) AS avg_shipping_charges FROM order_details;
+
+Customers
+WITH top_customers AS
+(SELECT customerscompanyname AS customers,ROUND((SUM(CAST((orderplaced_unitprice*quantity)AS numeric))-SUM(CAST((orderplaced_unitprice*quantity)AS numeric)*(discount/100)))) 
+AS Total_sales FROM public.combined_table_northwind GROUP BY customers)
+(SELECT *,ROW_NUMBER() OVER(ORDER BY total_sales DESC) AS Ranking,'Top_5_customers' AS Details FROM top_customers LIMIT 5)
+UNION ALL
+(SELECT *,ROW_NUMBER() OVER(ORDER BY total_sales ASC) AS Ranking,'Bottom_5_customers' AS Details FROM top_customers LIMIT 5)
+
+Products
+WITH top_customers AS
+(SELECT productname AS Products,ROUND((SUM(CAST((orderplaced_unitprice*quantity)AS numeric))-SUM(CAST((orderplaced_unitprice*quantity)AS numeric)*(discount/100)))) 
+AS Total_sales FROM public.combined_table_northwind GROUP BY Products)
+(SELECT *,ROW_NUMBER() OVER(ORDER BY total_sales DESC) AS Ranking,'Top_5_products' AS Details FROM top_customers LIMIT 5)
+UNION ALL
+(SELECT *,ROW_NUMBER() OVER(ORDER BY total_sales ASC) AS Ranking,'Bottom_5_products' AS Details FROM top_customers LIMIT 5)
+
+% of Sales by Category
+WITH categ AS(SELECT categoryname AS category,
+ROUND((SUM(CAST((orderplaced_unitprice*quantity)AS numeric))-SUM(CAST((orderplaced_unitprice*quantity)AS numeric)*(discount/100)))/1000,2) AS sales
+FROM public.combined_table_northwind GROUP BY category)
+SELECT category,sales,ROUND(sales/(SELECT SUM(sales) FROM categ)*100,2)||'%' AS Percentage FROM categ ORDER BY sales DESC;
+
+Total orders by category
+SELECT ca.*,nw.total_orders FROM categories ca INNER JOIN (SELECT categoryid,categoryname AS category,COUNT(orderid) AS total_orders FROM public.combined_table_northwind GROUP BY category,
+				 categoryid) nw ON nw.categoryid=ca.categoryid ORDER BY 4 DESC;
+
+Sales by shipper
+WITH shipping AS (SELECT shippingcompanyname AS shipper,ROUND((SUM(CAST((orderplaced_unitprice*quantity)AS numeric))-SUM(CAST((orderplaced_unitprice*quantity)AS numeric)*(discount/100)))) 
+AS Total_sales FROM public.combined_table_northwind GROUP BY shipper)
+SELECT shipper,ROUND(Total_sales/(SELECT SUM(Total_sales) FROM shipping )*100,2)||'%' AS percentage,Total_sales FROM shipping;
+
+Sales per week
+SELECT date_part('week',orderdate) AS weekday,
+date_part('month',orderdate) AS ordered_month_number,
+TO_CHAR(orderdate,'Month') AS ordered_month,
+date_part('year',orderdate) AS ordered_year,
+ROUND((SUM(CAST((orderplaced_unitprice*quantity)AS numeric))-SUM(CAST((orderplaced_unitprice*quantity)AS numeric)*(discount/100)))/1000,2) AS Total_sales
+FROM public.combined_table_northwind 
+GROUP BY ordered_month,ordered_month_number,ordered_year,weekday
+ORDER BY 4,2,1 ASC;
+
+Sales by country
+SELECT DISTINCT(customerscountry) FROM public.combined_table_northwind ORDER BY 1 DESC;
+
+Top 5 employee's %
+WITH
+empl AS(SELECT employeename,
+ROUND((SUM(CAST((orderplaced_unitprice*quantity)AS numeric))-SUM(CAST((orderplaced_unitprice*quantity)AS numeric)*(discount/100)))/1000,2) AS sales,
+RANK() OVER(ORDER BY (SUM(CAST((orderplaced_unitprice*quantity)AS numeric))-SUM(CAST((orderplaced_unitprice*quantity)AS numeric)*(discount/100)))/1000 DESC) AS ranking
+FROM public.combined_table_northwind
+GROUP BY employeename ORDER BY 2 DESC),
+
+emp_perc AS (
+SELECT CASE WHEN empl.ranking<6 THEN employeename ELSE 'Others' END AS employee_name,sales,
+ROUND(sales/(SELECT SUM(sales) FROM empl)*100,2) AS percentage FROM empl
+GROUP BY empl.ranking,employeename,sales ORDER BY sales DESC)
+
+SELECT employee_name,SUM(sales) AS sales,SUM(percentage) AS percentage FROM emp_perc GROUP BY employee_name ORDER BY 3 DESC;
+
+
+Top cities with product:
+
+WITH
+citydetail AS(SELECT customerscity,
+ROUND((SUM(CAST((orderplaced_unitprice*quantity)AS numeric))-SUM(CAST((orderplaced_unitprice*quantity)AS numeric)*(discount/100)))/1000,2) AS sales,
+RANK() OVER(ORDER BY (SUM(CAST((orderplaced_unitprice*quantity)AS numeric))-SUM(CAST((orderplaced_unitprice*quantity)AS numeric)*(discount/100)))/1000 DESC) AS ranking
+FROM public.combined_table_northwind
+GROUP BY customerscity ORDER BY 2 DESC),
+
+perc_city AS (
+SELECT CASE WHEN citydetail.ranking<4 THEN customerscity ELSE 'Others' END AS customerscity,sales,
+ROUND(sales/(SELECT SUM(sales) FROM citydetail)*100,2) AS percentage FROM citydetail
+GROUP BY ranking,customerscity,sales ORDER BY sales DESC)
+
+SELECT customerscity AS sales_in_city,SUM(sales) AS sales,SUM(percentage) AS percentage FROM perc_city GROUP BY customerscity ORDER BY 3 DESC;
+
+
