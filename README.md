@@ -15,6 +15,13 @@ The KPI dashboard was designed to be user-friendly, allowing the executive team 
 
 ▪ PowerPoint (For Presentation and Insight)
 
+## Actions Taken:
+1. Importing the Dataset into PostgreSQL.
+
+2. Data Wrangling/Transforming: Rectifying spelling mistakes, Removing the duplicate rows, Datatype checking.
+
+3. Loading the transformed data: Defining the useful KPIs, Creating insightful chart.
+
 ## Testing:
 Tested the dashboard using SQL queries and made a [documentation](https://github.com/rashmi0007/Northwind-Traders-Dashboard/blob/master/Other_Details/NorthWindTraders_TestCase.docx) .
 
