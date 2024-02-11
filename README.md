@@ -15,5 +15,8 @@ The KPI dashboard was designed to be user-friendly, allowing the executive team 
 
 ▪ PowerPoint (For Presentation and Insight)
 
+## Testing:
+Tested the dashboard using SQL queries and made a [documentation](https://github.com/rashmi0007/Northwind-Traders-Dashboard/blob/master/Other_Details/NorthWindTraders_TestCase.docx) .
+
 
 
