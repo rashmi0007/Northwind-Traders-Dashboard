@@ -6,6 +6,8 @@
 ## About Project:
 For this GitHub project, we focus on Northwind Traders, a renowned global import and export enterprise dedicated to delivering premium gourmet food items to restaurants, cafes, and specialized food retailers worldwide. The project's goal is to construct an advanced KPI dashboard tailored for the executive team.The primary aim is to provide a rapid overview of the company's performance across crucial aspects such as sales trends, product performance, key customers, and shipping costs.
 
+The KPI dashboard was designed to be user-friendly, allowing the executive team to quickly understand the company's performance. 
+
 ### 🛠 Tools Used in this project:
 ▪ Postgres
 ▪ Tableau
