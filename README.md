@@ -10,7 +10,10 @@ The KPI dashboard was designed to be user-friendly, allowing the executive team 
 
 ### 🛠 Tools Used in this project:
 ▪ Postgres
+
 ▪ Tableau
+
 ▪ PowerPoint (For Presentation and Insight)
+
 
 
