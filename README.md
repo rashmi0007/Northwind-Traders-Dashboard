@@ -18,5 +18,7 @@ The KPI dashboard was designed to be user-friendly, allowing the executive team 
 ## Testing:
 Tested the dashboard using SQL queries and made a [documentation](https://github.com/rashmi0007/Northwind-Traders-Dashboard/blob/master/Other_Details/NorthWindTraders_TestCase.docx) .
 
+## Acknowledgement:
+I want to extend my appreciation to Maven Analytics for furnishing us with this dataset.
 
 
