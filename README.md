@@ -15,6 +15,9 @@ The KPI dashboard was designed to be user-friendly, allowing the executive team 
 
 ▪ PowerPoint (For Presentation and Insight)
 
+### Star Schema:
+![DataModelling](https://github.com/rashmi0007/Northwind-Traders-Dashboard/assets/87612040/66b11301-64c2-4139-bef5-f4bb965713f1)
+
 ## Actions Taken:
 1. Importing the Dataset into PostgreSQL.
 
