@@ -19,9 +19,9 @@ The KPI dashboard was designed to be user-friendly, allowing the executive team 
 ![DataModelling](https://github.com/rashmi0007/Northwind-Traders-Dashboard/assets/87612040/66b11301-64c2-4139-bef5-f4bb965713f1)
 
 ## Actions Taken:
-1. Importing the Dataset into PostgreSQL.
+1. Data Wrangling/Transforming: Rectifying spelling mistakes, Removing the duplicate rows, Datatype checking.
 
-2. Data Wrangling/Transforming: Rectifying spelling mistakes, Removing the duplicate rows, Datatype checking.
+2. Importing the Dataset into PostgreSQL.
 
 3. Loading the transformed data: Defining the useful KPIs, Creating insightful chart.
 
@@ -29,6 +29,6 @@ The KPI dashboard was designed to be user-friendly, allowing the executive team 
 Tested the dashboard using SQL queries and made a [documentation](https://github.com/rashmi0007/Northwind-Traders-Dashboard/blob/master/Other_Details/NorthWindTraders_TestCase.docx) .
 
 ## Acknowledgement:
-I want to extend my appreciation to Maven Analytics for furnishing us with this dataset.
+I want to extend my appreciation to Maven Analytics for furnishing with this dataset.
 
 
